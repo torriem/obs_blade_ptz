@@ -26,12 +26,8 @@ mixin _$Filter {
   String get filterName => throw _privateConstructorUsedError;
   Map<String, dynamic> get filterSettings => throw _privateConstructorUsedError;
 
-  /// Serializes this Filter to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Filter
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $FilterCopyWith<Filter> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -58,8 +54,6 @@ class _$FilterCopyWithImpl<$Res, $Val extends Filter>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Filter
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -117,8 +111,6 @@ class __$$FilterImplCopyWithImpl<$Res>
       _$FilterImpl _value, $Res Function(_$FilterImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Filter
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -205,7 +197,7 @@ class _$FilterImpl implements _Filter {
                 .equals(other._filterSettings, _filterSettings));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -215,9 +207,7 @@ class _$FilterImpl implements _Filter {
       filterName,
       const DeepCollectionEquality().hash(_filterSettings));
 
-  /// Create a copy of Filter
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FilterImplCopyWith<_$FilterImpl> get copyWith =>
@@ -251,11 +241,8 @@ abstract class _Filter implements Filter {
   String get filterName;
   @override
   Map<String, dynamic> get filterSettings;
-
-  /// Create a copy of Filter
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FilterImplCopyWith<_$FilterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

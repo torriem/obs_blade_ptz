@@ -13,32 +13,36 @@ enum DashboardElement {
   ExposedControls,
 
   @HiveField(2)
-  SceneButtons,
+  PTZControls,
 
   @HiveField(3)
-  StudioModeTransition,
+  SceneButtons,
 
   @HiveField(4)
-  StudioModeConfig,
+  StudioModeTransition,
 
   @HiveField(5)
-  ScenePreview,
+  StudioModeConfig,
 
   @HiveField(6)
-  SceneItems,
+  ScenePreview,
 
   @HiveField(7)
-  SceneItemsAudio,
+  SceneItems,
 
   @HiveField(8)
-  StreamChat,
+  SceneItemsAudio,
 
   @HiveField(9)
+  StreamChat,
+
+  @HiveField(10)
   OBSStats;
 
   String get name => switch (this) {
         DashboardElement.ExposedProfile => 'Profiles',
         DashboardElement.ExposedControls => 'Controls',
+        DashboardElement.PTZControls => 'PTZ Camera',
         DashboardElement.SceneButtons => 'Scene Buttons',
         DashboardElement.StudioModeTransition => 'Studio Mode Transition',
         DashboardElement.StudioModeConfig => 'Studio Mode Config',

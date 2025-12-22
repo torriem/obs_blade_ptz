@@ -7,6 +7,7 @@ import '../obs_widgets/obs_widgets.dart';
 import '../obs_widgets/obs_widgets_mobile.dart';
 import 'exposed_controls/exposed_controls.dart';
 import 'profile_scene_collection/profile_scene_collection.dart';
+import 'ptz_controls/ptz_controls.dart';
 import 'scene_buttons/scene_buttons.dart';
 import 'scene_content/scene_content.dart';
 import 'scene_content/scene_content_mobile.dart';
@@ -30,6 +31,7 @@ class DashboardContent extends StatelessWidget {
             children: [
               ProfileSceneCollection(),
               ExposedControls(),
+              PTZControls(),
               SizedBox(height: 24.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

@@ -44,12 +44,8 @@ mixin _$SceneItem {
   /// (if this [SceneItem] is a group)
   bool get displayGroup => throw _privateConstructorUsedError;
 
-  /// Serializes this SceneItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of SceneItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SceneItemCopyWith<SceneItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -88,8 +84,6 @@ class _$SceneItemCopyWithImpl<$Res, $Val extends SceneItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SceneItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -168,8 +162,6 @@ class _$SceneItemCopyWithImpl<$Res, $Val extends SceneItem>
     ) as $Val);
   }
 
-  /// Create a copy of SceneItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SceneItemTransformCopyWith<$Res>? get sceneItemTransform {
@@ -220,8 +212,6 @@ class __$$SceneItemImplCopyWithImpl<$Res>
       _$SceneItemImpl _value, $Res Function(_$SceneItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SceneItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -416,7 +406,7 @@ class _$SceneItemImpl implements _SceneItem {
                 other.displayGroup == displayGroup));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -435,9 +425,7 @@ class _$SceneItemImpl implements _SceneItem {
       const DeepCollectionEquality().hash(_groupChildren),
       displayGroup);
 
-  /// Create a copy of SceneItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SceneItemImplCopyWith<_$SceneItemImpl> get copyWith =>
@@ -493,25 +481,22 @@ abstract class _SceneItem implements SceneItem {
   String? get sourceType;
   @override
   List<Filter> get filters;
+  @override
 
   /// OPTIONAL - Name of the item's parent (if this item belongs to a group)
-  @override
   String? get parentGroupName;
+  @override
 
   /// OPTIONAL - List of children (if this item is a group)
-  @override
   List<SceneItem>? get groupChildren;
+  @override
 
   /// CUSTOM - added myself to handle stuff internally
   /// Indicate whether we want to display the children of this group
   /// (if this [SceneItem] is a group)
-  @override
   bool get displayGroup;
-
-  /// Create a copy of SceneItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SceneItemImplCopyWith<_$SceneItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

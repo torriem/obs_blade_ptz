@@ -18,20 +18,22 @@ class DashboardElementAdapter extends TypeAdapter<DashboardElement> {
       case 1:
         return DashboardElement.ExposedControls;
       case 2:
-        return DashboardElement.SceneButtons;
+        return DashboardElement.PTZControls;
       case 3:
-        return DashboardElement.StudioModeTransition;
+        return DashboardElement.SceneButtons;
       case 4:
-        return DashboardElement.StudioModeConfig;
+        return DashboardElement.StudioModeTransition;
       case 5:
-        return DashboardElement.ScenePreview;
+        return DashboardElement.StudioModeConfig;
       case 6:
-        return DashboardElement.SceneItems;
+        return DashboardElement.ScenePreview;
       case 7:
-        return DashboardElement.SceneItemsAudio;
+        return DashboardElement.SceneItems;
       case 8:
-        return DashboardElement.StreamChat;
+        return DashboardElement.SceneItemsAudio;
       case 9:
+        return DashboardElement.StreamChat;
+      case 10:
         return DashboardElement.OBSStats;
       default:
         return DashboardElement.ExposedProfile;
@@ -47,29 +49,32 @@ class DashboardElementAdapter extends TypeAdapter<DashboardElement> {
       case DashboardElement.ExposedControls:
         writer.writeByte(1);
         break;
-      case DashboardElement.SceneButtons:
+      case DashboardElement.PTZControls:
         writer.writeByte(2);
         break;
-      case DashboardElement.StudioModeTransition:
+      case DashboardElement.SceneButtons:
         writer.writeByte(3);
         break;
-      case DashboardElement.StudioModeConfig:
+      case DashboardElement.StudioModeTransition:
         writer.writeByte(4);
         break;
-      case DashboardElement.ScenePreview:
+      case DashboardElement.StudioModeConfig:
         writer.writeByte(5);
         break;
-      case DashboardElement.SceneItems:
+      case DashboardElement.ScenePreview:
         writer.writeByte(6);
         break;
-      case DashboardElement.SceneItemsAudio:
+      case DashboardElement.SceneItems:
         writer.writeByte(7);
         break;
-      case DashboardElement.StreamChat:
+      case DashboardElement.SceneItemsAudio:
         writer.writeByte(8);
         break;
-      case DashboardElement.OBSStats:
+      case DashboardElement.StreamChat:
         writer.writeByte(9);
+        break;
+      case DashboardElement.OBSStats:
+        writer.writeByte(10);
         break;
     }
   }

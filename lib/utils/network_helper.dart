@@ -324,6 +324,40 @@ class NetworkHelper {
     );
   }
 
+  /// Make a vendor-specific request to OBS WebSocket.
+  /// Used for plugin-specific commands like PTZ camera controls.
+  ///
+  /// [channel] - The WebSocket channel to send the request through
+  /// [vendorName] - Name of the vendor/plugin (e.g., "obs-ptz")
+  /// [requestType] - Vendor-specific request type (e.g., "ptz_move")
+  /// [requestData] - Optional vendor-specific request data
+  static void makeVendorRequest(
+    IOWebSocketChannel channel,
+    String vendorName,
+    String requestType, [
+    Map<String, dynamic>? requestData,
+  ]) {
+    GeneralHelper.advLog(
+      'Outgoing Vendor Request: $vendorName.$requestType',
+    );
+
+    String requestUUID = const Uuid().v4();
+
+    channel.sink.add(
+      json.encode(
+        _requestObject({
+          'requestType': 'CallVendorRequest',
+          'requestId': requestUUID,
+          'requestData': {
+            'vendorName': vendorName,
+            'requestType': requestType,
+            if (requestData != null) 'requestData': requestData,
+          },
+        }),
+      ),
+    );
+  }
+
   /// Making use of the batch request capability to request information
   /// bundled together - useful since now the API divided information
   /// in several entities so we can choose what exactly we need

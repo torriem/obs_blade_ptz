@@ -297,4 +297,13 @@ enum RequestType {
   /// {'filterSettings': Object } - Object of settings to apply
   /// (Optional) {'overlay': bool } - True == apply the settings on top of existing ones, False == reset the input to its defaults, then apply settings.
   SetSourceFilterSettings,
+
+  /// Calls a vendor-specific request.
+  ///
+  /// This is used for plugin-specific functionality like PTZ camera controls.
+  ///
+  /// {'vendorName': String } - Name of the vendor/plugin
+  /// {'requestType': String } - Vendor-specific request type
+  /// (Optional) {'requestData': Object } - Vendor-specific request data
+  CallVendorRequest,
 }

@@ -24,12 +24,8 @@ mixin _$InputChannel {
   double? get average => throw _privateConstructorUsedError;
   double? get potential => throw _privateConstructorUsedError;
 
-  /// Serializes this InputChannel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of InputChannel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $InputChannelCopyWith<InputChannel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -53,8 +49,6 @@ class _$InputChannelCopyWithImpl<$Res, $Val extends InputChannel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of InputChannel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -98,8 +92,6 @@ class __$$InputChannelImplCopyWithImpl<$Res>
       _$InputChannelImpl _value, $Res Function(_$InputChannelImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InputChannel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -156,13 +148,11 @@ class _$InputChannelImpl implements _InputChannel {
                 other.potential == potential));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, current, average, potential);
 
-  /// Create a copy of InputChannel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$InputChannelImplCopyWith<_$InputChannelImpl> get copyWith =>
@@ -191,11 +181,8 @@ abstract class _InputChannel implements InputChannel {
   double? get average;
   @override
   double? get potential;
-
-  /// Create a copy of InputChannel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$InputChannelImplCopyWith<_$InputChannelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

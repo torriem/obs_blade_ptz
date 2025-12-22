@@ -38,12 +38,8 @@ mixin _$Transition {
   /// Object of settings for the transition. null if transition is not configurable
   dynamic get transitionSettings => throw _privateConstructorUsedError;
 
-  /// Serializes this Transition to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Transition
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TransitionCopyWith<Transition> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -73,8 +69,6 @@ class _$TransitionCopyWithImpl<$Res, $Val extends Transition>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Transition
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -139,8 +133,6 @@ class __$$TransitionImplCopyWithImpl<$Res>
       _$TransitionImpl _value, $Res Function(_$TransitionImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Transition
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -242,7 +234,7 @@ class _$TransitionImpl implements _Transition {
                 .equals(other.transitionSettings, transitionSettings));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -253,9 +245,7 @@ class _$TransitionImpl implements _Transition {
       transitionConfigurable,
       const DeepCollectionEquality().hash(transitionSettings));
 
-  /// Create a copy of Transition
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TransitionImplCopyWith<_$TransitionImpl> get copyWith =>
@@ -281,34 +271,32 @@ abstract class _Transition implements Transition {
   factory _Transition.fromJson(Map<String, dynamic> json) =
       _$TransitionImpl.fromJson;
 
-  /// Name of the transition
   @override
+
+  /// Name of the transition
   String get transitionName;
+  @override
 
   /// Kind of the transition
-  @override
   String get transitionKind;
+  @override
 
   /// Whether the transition uses a fixed (unconfigurable) duration
-  @override
   bool get transitionFixed;
+  @override
 
   /// Configured transition duration in milliseconds. null if transition is fixed
-  @override
   int? get transitionDuration;
+  @override
 
   /// Whether the transition supports being configured
-  @override
   bool get transitionConfigurable;
+  @override
 
   /// Object of settings for the transition. null if transition is not configurable
-  @override
   dynamic get transitionSettings;
-
-  /// Create a copy of Transition
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TransitionImplCopyWith<_$TransitionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

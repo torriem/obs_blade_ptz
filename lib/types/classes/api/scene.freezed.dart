@@ -26,12 +26,8 @@ mixin _$Scene {
   /// Ordered list of the current scene's source items
   int get sceneIndex => throw _privateConstructorUsedError;
 
-  /// Serializes this Scene to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Scene
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SceneCopyWith<Scene> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -53,8 +49,6 @@ class _$SceneCopyWithImpl<$Res, $Val extends Scene>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Scene
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -92,8 +86,6 @@ class __$$SceneImplCopyWithImpl<$Res>
       _$SceneImpl _value, $Res Function(_$SceneImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Scene
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -145,13 +137,11 @@ class _$SceneImpl implements _Scene {
                 other.sceneIndex == sceneIndex));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, sceneName, sceneIndex);
 
-  /// Create a copy of Scene
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SceneImplCopyWith<_$SceneImpl> get copyWith =>
@@ -172,18 +162,16 @@ abstract class _Scene implements Scene {
 
   factory _Scene.fromJson(Map<String, dynamic> json) = _$SceneImpl.fromJson;
 
-  /// Name of the currently active scene
   @override
+
+  /// Name of the currently active scene
   String get sceneName;
+  @override
 
   /// Ordered list of the current scene's source items
-  @override
   int get sceneIndex;
-
-  /// Create a copy of Scene
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SceneImplCopyWith<_$SceneImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

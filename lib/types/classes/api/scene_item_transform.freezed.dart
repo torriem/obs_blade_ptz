@@ -39,12 +39,8 @@ mixin _$SceneItemTransform {
   double? get sourceWidth => throw _privateConstructorUsedError;
   double? get width => throw _privateConstructorUsedError;
 
-  /// Serializes this SceneItemTransform to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of SceneItemTransform
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SceneItemTransformCopyWith<SceneItemTransform> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -86,8 +82,6 @@ class _$SceneItemTransformCopyWithImpl<$Res, $Val extends SceneItemTransform>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SceneItemTransform
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -224,8 +218,6 @@ class __$$SceneItemTransformImplCopyWithImpl<$Res>
       $Res Function(_$SceneItemTransformImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SceneItemTransform
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -431,7 +423,7 @@ class _$SceneItemTransformImpl implements _SceneItemTransform {
             (identical(other.width, width) || other.width == width));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -454,9 +446,7 @@ class _$SceneItemTransformImpl implements _SceneItemTransform {
       sourceWidth,
       width);
 
-  /// Create a copy of SceneItemTransform
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SceneItemTransformImplCopyWith<_$SceneItemTransformImpl> get copyWith =>
@@ -531,11 +521,8 @@ abstract class _SceneItemTransform implements SceneItemTransform {
   double? get sourceWidth;
   @override
   double? get width;
-
-  /// Create a copy of SceneItemTransform
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SceneItemTransformImplCopyWith<_$SceneItemTransformImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

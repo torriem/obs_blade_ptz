@@ -29,12 +29,8 @@ mixin _$Input {
   int? get syncOffset => throw _privateConstructorUsedError;
   bool get inputMuted => throw _privateConstructorUsedError;
 
-  /// Serializes this Input to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Input
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $InputCopyWith<Input> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -64,8 +60,6 @@ class _$InputCopyWithImpl<$Res, $Val extends Input>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Input
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -141,8 +135,6 @@ class __$$InputImplCopyWithImpl<$Res>
       _$InputImpl _value, $Res Function(_$InputImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Input
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -263,7 +255,7 @@ class _$InputImpl implements _Input {
                 other.inputMuted == inputMuted));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -276,9 +268,7 @@ class _$InputImpl implements _Input {
       syncOffset,
       inputMuted);
 
-  /// Create a copy of Input
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$InputImplCopyWith<_$InputImpl> get copyWith =>
@@ -321,11 +311,8 @@ abstract class _Input implements Input {
   int? get syncOffset;
   @override
   bool get inputMuted;
-
-  /// Create a copy of Input
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$InputImplCopyWith<_$InputImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
