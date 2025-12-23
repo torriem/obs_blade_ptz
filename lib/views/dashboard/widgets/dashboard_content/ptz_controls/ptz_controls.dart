@@ -57,6 +57,8 @@ class _PTZControlsState extends State<PTZControls> {
 
   Widget _buildControlSlider({
     required String label,
+    required String negativeLabel,
+    required String positiveLabel,
     required double value,
     required ValueChanged<double> onChanged,
     required VoidCallback onChangeEnd,
@@ -78,38 +80,108 @@ class _PTZControlsState extends State<PTZControls> {
                           : Theme.of(context).disabledColor,
                     ),
               ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 4.0,
+                ),
+                decoration: BoxDecoration(
+                  color: enabled
+                      ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.15)
+                      : Theme.of(context).disabledColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+                child: Text(
+                  value.toStringAsFixed(2),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: enabled
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).disabledColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4.0),
+          // Direction labels
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Text(
-                value.toStringAsFixed(2),
+                negativeLabel,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: enabled
-                          ? Theme.of(context).colorScheme.primary
+                          ? (value < 0
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.5))
                           : Theme.of(context).disabledColor,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 11.0,
+                    ),
+              ),
+              Text(
+                'CENTER',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: enabled
+                          ? (value == 0.0
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.5))
+                          : Theme.of(context).disabledColor,
+                      fontSize: 10.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
+              Text(
+                positiveLabel,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: enabled
+                          ? (value > 0
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.5))
+                          : Theme.of(context).disabledColor,
+                      fontSize: 11.0,
                     ),
               ),
             ],
           ),
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              overlayShape: const RoundSliderOverlayShape(overlayRadius: 16.0),
-            ),
-            child: Slider(
-              value: value,
-              min: -1.0,
-              max: 1.0,
-              divisions: 200,
-              onChanged: enabled
-                  ? (newValue) {
-                      onChanged(newValue);
-                      _sendPTZMove();
-                    }
-                  : null,
-              onChangeEnd: enabled
-                  ? (_) {
-                      onChangeEnd();
-                    }
-                  : null,
-            ),
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Center line indicator
+              Positioned(
+                top: 12,
+                child: Container(
+                  width: 2.0,
+                  height: 24.0,
+                  color: enabled
+                      ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)
+                      : Theme.of(context).disabledColor.withValues(alpha: 0.2),
+                ),
+              ),
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  overlayShape: const RoundSliderOverlayShape(overlayRadius: 16.0),
+                  trackHeight: 6.0,
+                ),
+                child: Slider(
+                  value: value,
+                  min: -1.0,
+                  max: 1.0,
+                  divisions: 200,
+                  onChanged: enabled
+                      ? (newValue) {
+                          onChanged(newValue);
+                          _sendPTZMove();
+                        }
+                      : null,
+                  onChangeEnd: enabled
+                      ? (_) {
+                          onChangeEnd();
+                        }
+                      : null,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -151,7 +223,9 @@ class _PTZControlsState extends State<PTZControls> {
 
               // Pan Control
               _buildControlSlider(
-                label: 'Pan (Left/Right)',
+                label: 'Pan',
+                negativeLabel: '◄ LEFT',
+                positiveLabel: 'RIGHT ►',
                 value: _pan,
                 onChanged: (value) => setState(() => _pan = value),
                 onChangeEnd: () {
@@ -163,7 +237,9 @@ class _PTZControlsState extends State<PTZControls> {
 
               // Tilt Control
               _buildControlSlider(
-                label: 'Tilt (Up/Down)',
+                label: 'Tilt',
+                negativeLabel: '▼ DOWN',
+                positiveLabel: 'UP ▲',
                 value: _tilt,
                 onChanged: (value) => setState(() => _tilt = value),
                 onChangeEnd: () {
@@ -175,7 +251,9 @@ class _PTZControlsState extends State<PTZControls> {
 
               // Zoom Control
               _buildControlSlider(
-                label: 'Zoom (In/Out)',
+                label: 'Zoom',
+                negativeLabel: '◄ OUT',
+                positiveLabel: 'IN ►',
                 value: _zoom,
                 onChanged: (value) => setState(() => _zoom = value),
                 onChangeEnd: () {

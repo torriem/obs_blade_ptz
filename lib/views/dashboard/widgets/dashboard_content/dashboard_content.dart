@@ -31,7 +31,6 @@ class DashboardContent extends StatelessWidget {
             children: [
               ProfileSceneCollection(),
               ExposedControls(),
-              PTZControls(),
               SizedBox(height: 24.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -69,6 +68,8 @@ class DashboardContent extends StatelessWidget {
               ),
               SizedBox(height: 24.0),
               ScenePreview(),
+              SizedBox(height: 24.0),
+              PTZControls(),
               SizedBox(height: 24.0),
               ResponsiveWidgetWrapper(
                 mobileWidget: SceneContentMobile(),

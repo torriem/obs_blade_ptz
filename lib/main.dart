@@ -145,7 +145,10 @@ Future<void> _initializeHive() async {
   );
 }
 
-bool _isLogNew(List<LogLevel> level, String entry) => !List<AppLog>.from(
+bool _isLogNew(List<LogLevel> level, String entry) {
+  if (!Hive.isBoxOpen(HiveKeys.AppLog.name)) return true;
+
+  return !List<AppLog>.from(
         Hive.box<AppLog>(HiveKeys.AppLog.name)
             .values
             .where((log) => level.contains(log.level)))
@@ -154,6 +157,7 @@ bool _isLogNew(List<LogLevel> level, String entry) => !List<AppLog>.from(
     .any((prevLog) =>
         DateTime.now().millisecondsSinceEpoch - prevLog.timestampMS < 10000 &&
         prevLog.entry == entry);
+}
 
 void _logging(String line, [LogLevel? fixedLevel]) {
   String? stack;
@@ -189,15 +193,17 @@ void _logging(String line, [LogLevel? fixedLevel]) {
 
   if (shouldLog &&
       _isLogNew([LogLevel.Info, LogLevel.Warning, LogLevel.Error], line)) {
-    Hive.box<AppLog>(HiveKeys.AppLog.name).add(
-      AppLog(
-        DateTime.now().millisecondsSinceEpoch,
-        level,
-        line,
-        stack,
-        manually,
-      ),
-    );
+    if (Hive.isBoxOpen(HiveKeys.AppLog.name)) {
+      Hive.box<AppLog>(HiveKeys.AppLog.name).add(
+        AppLog(
+          DateTime.now().millisecondsSinceEpoch,
+          level,
+          line,
+          stack,
+          manually,
+        ),
+      );
+    }
   }
 }
 

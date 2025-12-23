@@ -140,7 +140,7 @@ class App extends StatelessWidget {
             .transparent, //(sliderColor ?? StylingHelper.highlight_color).withOpacity(0.3),
       ),
 
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         labelColor: brightness != null && brightness == Brightness.light
             ? Colors.black
             : Colors.white,
