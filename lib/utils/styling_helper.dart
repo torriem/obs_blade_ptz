@@ -1,6 +1,7 @@
-import 'dart:io';
+import 'dart:io' if (dart.library.js_interop) 'dart:html';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:obs_blade/types/extensions/color.dart';
@@ -36,11 +37,12 @@ class StylingHelper {
   /// TODO: Check why currently only [BouncingScrollPhysics] seems
   /// to work properly for the [RefresherAppBar] to always scroll on
   /// both iOS and Android
-  static ScrollPhysics get platformAwareScrollPhysics => Platform.isIOS
-      // ? const AlwaysScrollableScrollPhysics()
-      ? const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())
-      // : const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
-      : const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+  static ScrollPhysics get platformAwareScrollPhysics =>
+      defaultTargetPlatform == TargetPlatform.iOS
+          // ? const AlwaysScrollableScrollPhysics()
+          ? const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics())
+          // : const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
+          : const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics());
 
   static bool colorIsDark({BuildContext? context, Color? color}) {
     assert(context != null || color != null);

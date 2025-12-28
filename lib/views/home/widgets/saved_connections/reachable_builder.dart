@@ -5,7 +5,8 @@ import 'package:mobx/mobx.dart';
 import 'package:obs_blade/models/connection.dart';
 import 'package:obs_blade/stores/views/home.dart';
 import 'package:obs_blade/types/enums/hive_keys.dart';
-import 'package:obs_blade/utils/network_helper.dart';
+import 'package:obs_blade/utils/autodiscovery_helper_io.dart'
+    if (dart.library.js_interop) 'package:obs_blade/utils/autodiscovery_helper_web.dart';
 
 class ReachableBuilder extends StatefulWidget {
   final Widget Function(List<Connection> savedConnections)
@@ -47,7 +48,7 @@ class _ReachableBuilderState extends State<ReachableBuilder> {
     setState(() {});
 
     List<Connection> availableConnections =
-        await NetworkHelper.checkConnectionAvailabilities(_savedConnections);
+        await AutoDiscoveryHelper.checkConnectionAvailabilities(_savedConnections);
 
     for (var connection in _savedConnections) {
       connection.reachable = availableConnections.any((availableConnection) =>

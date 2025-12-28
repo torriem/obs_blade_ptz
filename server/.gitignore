@@ -1,0 +1,9 @@
+# Dart/Pub
+.dart_tool/
+.packages
+pubspec.lock
+
+# Build output
+*.exe
+*.app
+*.dill

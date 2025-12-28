@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' if (dart.library.js_interop) 'dart:html';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -102,7 +102,8 @@ class App extends StatelessWidget {
       /// agnostic elements (if the user opted in for that)
       platform: settingsBox.get(SettingsKeys.ForceNonNativeElements.name,
               defaultValue: false)
-          ? (Platform.isIOS || Platform.isMacOS
+          ? (defaultTargetPlatform == TargetPlatform.iOS ||
+                  defaultTargetPlatform == TargetPlatform.macOS
               ? TargetPlatform.android
               : TargetPlatform.iOS)
           : defaultTargetPlatform,
