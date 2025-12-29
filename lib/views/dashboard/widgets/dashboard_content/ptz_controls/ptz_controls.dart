@@ -493,6 +493,7 @@ class _PTZControlsState extends State<PTZControls> {
     final bool isConnected = network.activeSession?.socket != null;
 
     return BaseCard(
+      constrained: false,
       paddingChild: const EdgeInsets.all(18.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
