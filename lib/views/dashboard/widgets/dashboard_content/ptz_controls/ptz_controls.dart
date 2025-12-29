@@ -365,10 +365,6 @@ class _PTZControlsState extends State<PTZControls> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
               if (isConnected) ...[
-                const SizedBox(height: 24.0),
-                const Divider(),
-                const SizedBox(height: 12.0),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -439,7 +435,7 @@ class _PTZControlsState extends State<PTZControls> {
                       crossAxisCount: 3,
                       crossAxisSpacing: 8.0,
                       mainAxisSpacing: 8.0,
-                      childAspectRatio: 2.0,
+                      childAspectRatio: 1.6,
                     ),
                     itemCount: _presets.length,
                     itemBuilder: (context, index) {
@@ -505,8 +501,9 @@ class _PTZControlsState extends State<PTZControls> {
                 ),
           ),
           const SizedBox(height: 12.0),
-          // Use MediaQuery to check actual screen width for responsive layout
-          MediaQuery.sizeOf(context).width > 700
+          // Use wide layout if width is sufficient OR device is a tablet
+          MediaQuery.sizeOf(context).width >= 500 ||
+                  MediaQuery.sizeOf(context).shortestSide >= 600
               ? Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -525,6 +522,11 @@ class _PTZControlsState extends State<PTZControls> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _buildCameraControls(isConnected),
+                    if (isConnected) ...[
+                      const SizedBox(height: 24.0),
+                      const Divider(),
+                      const SizedBox(height: 12.0),
+                    ],
                     _buildPresetsSection(isConnected),
                   ],
                 ),
