@@ -23,6 +23,7 @@ echo ""
 
 # Step 3: Compile server to executable
 echo "Step 3/4: Compiling server to executable..."
+mkdir -p dist
 cd server
 dart compile exe server.dart -o ../dist/obs_blade_server
 cd ..

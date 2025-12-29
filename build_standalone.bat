@@ -22,6 +22,7 @@ echo.
 
 REM Step 3: Compile server to executable
 echo Step 3/4: Compiling server to executable...
+if not exist dist mkdir dist
 cd server
 call dart compile exe server.dart -o ../dist/obs_blade_server.exe
 if %errorlevel% neq 0 exit /b %errorlevel%
