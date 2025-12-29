@@ -32,8 +32,10 @@ void main(List<String> args) async {
 
   // Start the server
   final port = int.tryParse(args.isNotEmpty ? args[0] : '8080') ?? 8080;
-  final server = await shelf_io.serve(loggedHandler, 'localhost', port);
+  final bindAddress = args.length > 1 ? args[1] : 'localhost';
+  final server = await shelf_io.serve(loggedHandler, bindAddress, port);
 
   print('Serving Flutter web app at http://${server.address.host}:${server.port}');
+  print('Bind address: $bindAddress');
   print('Press Ctrl+C to stop the server');
 }

@@ -47,9 +47,14 @@ echo   - web\ (Flutter web app files)
 echo.
 echo To run the server:
 echo   cd dist
-echo   obs_blade_server.exe [port]
+echo   obs_blade_server.exe [port] [bind_address]
 echo.
-echo Default port is 8080
-echo Example: obs_blade_server.exe 3000
+echo Default port is 8080, default bind address is localhost
+echo.
+echo Examples:
+echo   obs_blade_server.exe                    (port 8080, localhost only)
+echo   obs_blade_server.exe 3000               (port 3000, localhost only)
+echo   obs_blade_server.exe 8080 0.0.0.0       (port 8080, all interfaces)
+echo   obs_blade_server.exe 3000 192.168.1.10  (port 3000, specific IP)
 echo ==========================================
 pause
