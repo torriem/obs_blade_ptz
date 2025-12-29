@@ -11,6 +11,7 @@ class CustomExpansionTile extends StatefulWidget {
   final Widget expandedBody;
   final VoidCallback? onExpand;
   final void Function(VoidCallback, bool)? manualExpand;
+  final bool initiallyExpanded;
 
   const CustomExpansionTile({
     super.key,
@@ -23,6 +24,7 @@ class CustomExpansionTile extends StatefulWidget {
     required this.expandedBody,
     this.onExpand,
     this.manualExpand,
+    this.initiallyExpanded = true,
   })  : assert(headerText != null || customHeader != null),
         super();
 
@@ -32,7 +34,7 @@ class CustomExpansionTile extends StatefulWidget {
 
 class _CustomExpansionTileState extends State<CustomExpansionTile>
     with SingleTickerProviderStateMixin {
-  final ExpandableController _expandController = ExpandableController();
+  late ExpandableController _expandController;
 
   late AnimationController _animController;
 
@@ -43,8 +45,17 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
 
   @override
   void initState() {
+    _expandController = ExpandableController(
+      initialExpanded: widget.initiallyExpanded,
+    );
+
     _animController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
+
+    // Initialize animation state to match initial expansion state
+    if (widget.initiallyExpanded) {
+      _animController.value = 1.0;
+    }
 
     _startExpandAnimation = () {
       _expandController.toggle();

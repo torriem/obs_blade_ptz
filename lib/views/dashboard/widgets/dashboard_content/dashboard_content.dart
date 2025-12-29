@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/general/base/card.dart';
 import '../../../../shared/general/base/divider.dart';
+import '../../../../shared/general/custom_expansion_tile.dart';
 import '../../../../shared/general/custom_sliver_list.dart';
 import '../../../../shared/general/responsive_widget_wrapper.dart';
 import '../obs_widgets/obs_widgets.dart';
@@ -78,29 +80,24 @@ class DashboardContent extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          padding: const EdgeInsets.only(left: 8.0),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Widgets',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ),
-        const ResponsiveWidgetWrapper(
-          mobileWidget: Column(
-            children: [
-              SizedBox(height: 8.0),
-              OBSWidgetsMobile(),
-            ],
-          ),
-          tabletWidget: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 8.0),
-                child: BaseDivider(),
+        BaseCard(
+          bottomPadding: 0.0,
+          paddingChild: const EdgeInsets.symmetric(vertical: 18.0),
+          child: CustomExpansionTile(
+            headerText: 'Widgets',
+            initiallyExpanded: false,
+            expandedBody: const Padding(
+              padding: EdgeInsets.only(
+                left: 18.0,
+                right: 18.0,
+                top: 12.0,
+                bottom: 18.0,
               ),
-              OBSWidgets(),
-            ],
+              child: ResponsiveWidgetWrapper(
+                mobileWidget: OBSWidgetsMobile(),
+                tabletWidget: OBSWidgets(),
+              ),
+            ),
           ),
         ),
       ],

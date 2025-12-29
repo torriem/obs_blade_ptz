@@ -177,6 +177,7 @@ class _ScenePreviewState extends State<ScenePreview> {
               .get(SettingsKeys.ExposeScenePreview.name, defaultValue: true)
           ? CustomExpansionTile(
               headerText: 'Current OBS scene preview',
+              initiallyExpanded: false,
               manualExpand: (expandFunction, expanded) {
                 // ignore: prefer_function_declarations_over_variables
                 VoidCallback onExpand = () {
