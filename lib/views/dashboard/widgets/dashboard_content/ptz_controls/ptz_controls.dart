@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../../shared/general/base/card.dart';
-import '../../../../../shared/general/custom_expansion_tile.dart';
 import '../../../../../stores/shared/network.dart';
+import '../../../../../utils/general_helper.dart';
 import '../../../../../utils/network_helper.dart';
 
 class PTZControls extends StatefulWidget {
@@ -17,6 +17,87 @@ class _PTZControlsState extends State<PTZControls> {
   double _pan = 0.0;
   double _tilt = 0.0;
   double _zoom = 0.0;
+  List<PTZPreset> _presets = [];
+  bool _loadingPresets = false;
+  bool _setMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPresets();
+  }
+
+  void _fetchPresets() async {
+    final network = GetIt.instance<NetworkStore>();
+    if (network.activeSession?.socket == null) return;
+
+    setState(() => _loadingPresets = true);
+
+    try {
+      GeneralHelper.advLog('PTZ: Fetching presets...');
+      final response = await NetworkHelper.makeVendorRequestAsync(
+        network.activeSession!.socket,
+        'obs-ptz',
+        'ptz_get_presets',
+        {},
+      );
+
+      GeneralHelper.advLog('PTZ: Response received: $response');
+
+      if (response != null) {
+        // Response structure: {requestType: ..., responseData: {presets: [...], success: true}, vendorName: ...}
+        final responseData = response['responseData'] as Map<String, dynamic>?;
+        final presetsData = responseData?['presets'] as List<dynamic>?;
+        GeneralHelper.advLog('PTZ: Presets data: $presetsData');
+        if (presetsData != null) {
+          GeneralHelper.advLog('PTZ: Found ${presetsData.length} presets');
+          setState(() {
+            _presets = presetsData
+                .map((p) => PTZPreset(
+                      id: p['id'] as int,
+                      name: p['name'] as String,
+                    ))
+                .toList();
+          });
+          GeneralHelper.advLog('PTZ: Presets set to state: $_presets');
+        } else {
+          GeneralHelper.advLog('PTZ: presetsData is null');
+        }
+      } else {
+        GeneralHelper.advLog('PTZ: response is null');
+      }
+    } catch (e) {
+      GeneralHelper.advLog('PTZ: Error fetching presets: $e');
+    } finally {
+      setState(() => _loadingPresets = false);
+    }
+  }
+
+  void _recallPreset(int presetId) {
+    final network = GetIt.instance<NetworkStore>();
+    if (network.activeSession?.socket != null) {
+      NetworkHelper.makeVendorRequest(
+        network.activeSession!.socket,
+        'obs-ptz',
+        'ptz_recall_preset',
+        {'preset_id': presetId},
+      );
+    }
+  }
+
+  void _setPreset(int presetId) {
+    final network = GetIt.instance<NetworkStore>();
+    if (network.activeSession?.socket != null) {
+      NetworkHelper.makeVendorRequest(
+        network.activeSession!.socket,
+        'obs-ptz',
+        'ptz_set_preset',
+        {'preset_id': presetId},
+      );
+      // Deactivate set mode after setting
+      setState(() => _setMode = false);
+    }
+  }
 
   void _sendPTZMove() {
     final network = GetIt.instance<NetworkStore>();
@@ -188,26 +269,10 @@ class _PTZControlsState extends State<PTZControls> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final network = GetIt.instance<NetworkStore>();
-    final bool isConnected = network.activeSession?.socket != null;
-
-    return BaseCard(
-      bottomPadding: 0.0,
-      paddingChild: const EdgeInsets.symmetric(vertical: 18.0),
-      child: CustomExpansionTile(
-        headerText: 'PTZ Camera Controls',
-        expandedBody: Padding(
-          padding: const EdgeInsets.only(
-            left: 18.0,
-            right: 18.0,
-            top: 12.0,
-            bottom: 18.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
+  Widget _buildCameraControls(bool isConnected) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
               if (!isConnected)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12.0),
@@ -291,10 +356,187 @@ class _PTZControlsState extends State<PTZControls> {
                     ),
                 textAlign: TextAlign.center,
               ),
-            ],
+      ],
+    );
+  }
+
+  Widget _buildPresetsSection(bool isConnected) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+              if (isConnected) ...[
+                const SizedBox(height: 24.0),
+                const Divider(),
+                const SizedBox(height: 12.0),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Presets',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    if (_loadingPresets)
+                      const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    else
+                      IconButton(
+                        icon: const Icon(Icons.refresh, size: 20),
+                        onPressed: _fetchPresets,
+                        tooltip: 'Refresh presets',
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                      ),
+                  ],
+                ),
+
+                const SizedBox(height: 12.0),
+
+                // Set Mode Toggle Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () => setState(() => _setMode = !_setMode),
+                    icon: Icon(_setMode ? Icons.check_box : Icons.check_box_outline_blank),
+                    label: Text(_setMode ? 'SET MODE: ON' : 'Set'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _setMode
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.surface,
+                      foregroundColor: _setMode
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.onSurface,
+                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12.0),
+
+                if (_presets.isEmpty && !_loadingPresets)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Text(
+                      'No presets available',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.6),
+                            fontStyle: FontStyle.italic,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                else
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                      childAspectRatio: 2.0,
+                    ),
+                    itemCount: _presets.length,
+                    itemBuilder: (context, index) {
+                      final preset = _presets[index];
+                      return ElevatedButton(
+                        onPressed: () => _setMode
+                            ? _setPreset(preset.id)
+                            : _recallPreset(preset.id),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 8.0,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${preset.id + 1}',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10,
+                                  ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              preset.name,
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontSize: 11,
+                                  ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+              ],
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final network = GetIt.instance<NetworkStore>();
+    final bool isConnected = network.activeSession?.socket != null;
+
+    return BaseCard(
+      paddingChild: const EdgeInsets.all(18.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'PTZ Camera Controls',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-        ),
+          const SizedBox(height: 12.0),
+          // Use MediaQuery to check actual screen width for responsive layout
+          MediaQuery.sizeOf(context).width > 700
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: _buildCameraControls(isConnected),
+                    ),
+                    const SizedBox(width: 24.0),
+                    Expanded(
+                      flex: 1,
+                      child: _buildPresetsSection(isConnected),
+                    ),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildCameraControls(isConnected),
+                    _buildPresetsSection(isConnected),
+                  ],
+                ),
+        ],
       ),
     );
   }
+}
+
+// Model class for PTZ presets
+class PTZPreset {
+  final int id;
+  final String name;
+
+  PTZPreset({required this.id, required this.name});
 }

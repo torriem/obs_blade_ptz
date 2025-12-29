@@ -201,7 +201,27 @@ abstract class _NetworkStore with Store {
     this.watchOBSStream().listen((message) {
       if (message is BaseEvent) {
         _handleEvent(message);
+      } else if (message is BaseResponse) {
+        _handleResponse(message);
       }
     });
+  }
+
+  void _handleResponse(BaseResponse response) {
+    // Check if this is a CallVendorRequest response
+    GeneralHelper.advLog('_handleResponse called, requestType: ${response.requestType.name}');
+    if (response.requestType.name == 'CallVendorRequest') {
+      GeneralHelper.advLog('CallVendorRequest detected');
+      final requestId = response.jsonRAW['d']?['requestId'] as String?;
+      final responseData = response.jsonRAW['d']?['responseData'] as Map<String, dynamic>?;
+      GeneralHelper.advLog('requestId: $requestId, responseData: $responseData');
+
+      if (requestId != null && responseData != null) {
+        GeneralHelper.advLog('Calling handleVendorResponse');
+        NetworkHelper.handleVendorResponse(requestId, responseData);
+      } else {
+        GeneralHelper.advLog('requestId or responseData is null!');
+      }
+    }
   }
 }

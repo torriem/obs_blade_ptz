@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:obs_blade/types/enums/request_batch_type.dart';
@@ -121,6 +122,66 @@ class NetworkHelper {
         }),
       ),
     );
+  }
+
+  // Map to store completers for async vendor requests
+  static final Map<String, Completer<Map<String, dynamic>?>> _vendorRequestCompleters = {};
+
+  /// Make a vendor-specific request to OBS WebSocket and wait for response.
+  /// Returns a Future that completes with the vendor response data.
+  ///
+  /// [channel] - The WebSocket channel to send the request through
+  /// [vendorName] - Name of the vendor/plugin (e.g., "obs-ptz")
+  /// [requestType] - Vendor-specific request type (e.g., "ptz_get_presets")
+  /// [requestData] - Optional vendor-specific request data
+  /// [timeout] - Optional timeout duration (default: 5 seconds)
+  static Future<Map<String, dynamic>?> makeVendorRequestAsync(
+    WebSocketChannel channel,
+    String vendorName,
+    String requestType, [
+    Map<String, dynamic>? requestData,
+    Duration timeout = const Duration(seconds: 5),
+  ]) async {
+    GeneralHelper.advLog(
+      'Outgoing Vendor Request (async): $vendorName.$requestType',
+    );
+
+    String requestUUID = const Uuid().v4();
+    final completer = Completer<Map<String, dynamic>?>();
+    _vendorRequestCompleters[requestUUID] = completer;
+
+    // Set up timeout
+    Timer(timeout, () {
+      if (!completer.isCompleted) {
+        _vendorRequestCompleters.remove(requestUUID);
+        completer.completeError(TimeoutException('Vendor request timeout'));
+      }
+    });
+
+    channel.sink.add(
+      json.encode(
+        _requestObject({
+          'requestType': 'CallVendorRequest',
+          'requestId': requestUUID,
+          'requestData': {
+            'vendorName': vendorName,
+            'requestType': requestType,
+            if (requestData != null) 'requestData': requestData,
+          },
+        }),
+      ),
+    );
+
+    return completer.future;
+  }
+
+  /// Process a vendor request response. Should be called from the websocket
+  /// message handler when a CallVendorRequest response is received.
+  static void handleVendorResponse(String requestId, Map<String, dynamic> responseData) {
+    final completer = _vendorRequestCompleters.remove(requestId);
+    if (completer != null && !completer.isCompleted) {
+      completer.complete(responseData);
+    }
   }
 
   /// Making use of the batch request capability to request information
